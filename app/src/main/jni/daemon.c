@@ -1,9 +1,6 @@
 //
 // Created by Administrator on 2015/12/24.
 //
-#include <string.h>
-#include <jni.h>
-
 #include <jni.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +18,8 @@
 /**
  * 将Java中的String转换成c中的char字符串
  */
-char* Jstring2CStr(JNIEnv* env, jstring jstr) {
-    char* rtn = NULL;
+char *Jstring2CStr(JNIEnv *env, jstring jstr) {
+    char *rtn = NULL;
     jclass clsstring = (*env)->FindClass(env, "java/lang/String"); //String
     jstring strencode = (*env)->NewStringUTF(env, "GB2312"); // 得到一个java字符串 "GB2312"
     jmethodID mid = (*env)->GetMethodID(env, clsstring, "getBytes",
@@ -30,9 +27,9 @@ char* Jstring2CStr(JNIEnv* env, jstring jstr) {
     jbyteArray barr = (jbyteArray)(*env)->CallObjectMethod(env, jstr, mid,
                                                            strencode); // String .getByte("GB2312");
     jsize alen = (*env)->GetArrayLength(env, barr); // byte数组的长度
-    jbyte* ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);
+    jbyte *ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);
     if (alen > 0) {
-        rtn = (char*) malloc(alen + 1); //""
+        rtn = (char *) malloc(alen + 1); //""
         memcpy(rtn, ba, alen);
         rtn[alen] = 0;
     }
@@ -40,10 +37,10 @@ char* Jstring2CStr(JNIEnv* env, jstring jstr) {
     return rtn;
 }
 
-
 JNICALL Java_com_charonchui_daemonservice_service_DaemonService_startDaemon
         (JNIEnv *env, jobject thiz, jstring serviceName, jint sdkVersion) {
-    char * name = Jstring2CStr(env, serviceName);
+    char *name = Jstring2CStr(env, serviceName);
+
 //fork子进程，以执行轮询任务
     pid_t pid = fork();
     LOGI("fork=%d", pid);

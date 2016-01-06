@@ -14,7 +14,7 @@ public class DaemonService extends Service{
 
     @Override
     public void onCreate() {
-        startDaemon(getPackageName() + DaemonService.class.getSimpleName(), Build.VERSION.SDK_INT);
+        startDaemon(getPackageName() + "/" + DaemonService.class.getName(), Build.VERSION.SDK_INT);
         super.onCreate();
     }
 
@@ -29,6 +29,11 @@ public class DaemonService extends Service{
         return null;
     }
 
+    /**
+     *
+     * @param serviceName componentName ｛package name｝/｛full service name}
+     * @param sdkVersion
+     */
     private native void startDaemon(String serviceName, int sdkVersion);
 
     static {
